@@ -1,4 +1,4 @@
-Cittadino/Vaccinano/Persona/Cittadino vaccinando
+﻿Cittadino/Vaccinano/Persona/Cittadino vaccinando
 nome, cognome, età, città ed indirizzo di residenza, codice fiscale
 suddivisi in personale sanitario e scolastico, categorie fragili e altri
 prenota lasciando il numero di telefono o la mail indicando la precedente positività (se presente) le allergie a farmici/intolleranze alimentari
