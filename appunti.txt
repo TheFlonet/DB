@@ -1,0 +1,22 @@
+Cittadino/Vaccinano/Persona/Cittadino vaccinando
+nome, cognome, età, città ed indirizzo di residenza, codice fiscale
+suddivisi in personale sanitario e scolastico, categorie fragili e altri
+prenota lasciando il numero di telefono o la mail indicando la precedente positività (se presente) le allergie a farmici/intolleranze alimentari
+può essere indirizzato a un centro vaccinale della città di residenza
+Personale sanitario e personale scolastico possono accedere ai vaccini COVIDIN e CORONAX. I soggetti fragili possono accedere solo a CORONAX e FLUSTOP. Gli altri soggetti non possono accedere a CORONAX.
+Nel caso il cittadino abbia avuto precedenti reazioni allergiche, non può essere raccomandato nessun vaccino per cui almeno un lotto abbia registrato una segnalazione di reazione avversa negli ultimi 30 giorni
+Nel caso in cui il vaccinando abbia positività pregressa ad un test COVID, viene specificato che la seconda dose del vaccino, se prevista, non deve essere somministrata.
+
+Vaccino
+tipi COVIDIN, CORONAX e FLUSTOP
+età minima e massima di somministrazione e una certa efficacia
+può richiedere una (FLUSTOP) o due (COVIDIN, CORONAX) somministrazioni con indicato l'intervallo temporale
+
+Lotti
+insieme di vaccini con data di produzione e scadenza
+reazioni allergiche eventualmente riscontrate
+
+Centro vaccinale
+nelle varie città del Paese a diversi indirizzi e possono
+esserci più centri per ogni città
+dispone in ogni momento di zero o più fiale di uno o più vaccini ed a ogni centro afferiscono uno o più medici
