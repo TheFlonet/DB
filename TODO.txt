@@ -1,0 +1,2 @@
+Aggiungere cardinalità ad alcuni attributi
+Aggiungere attributo ad associazione per contare le fiale disponibili
