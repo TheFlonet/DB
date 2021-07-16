@@ -1,0 +1,3 @@
+Ma l'attributo centro di appartenenza serve? non è espresso dalla relazione afferisce?
+
+L'identificativo di "medico": va scritto CF o va bene lasciarlo con solo linea??
