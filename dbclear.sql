@@ -1,5 +1,15 @@
 begin;
 
+-- Domini
+
+drop domain if exists CodiceFiscale;
+drop domain if exists NomeAllergia;
+drop domain if exists NomeVaccino;
+drop domain if exists TipoCittadino;
+drop domain if exists TipoMedico;
+
+-- Tabelle
+
 drop table if exists Allergia cascade;
 drop table if exists AppuntamentoVaccinale cascade;
 drop table if exists CentroVaccinale cascade;
