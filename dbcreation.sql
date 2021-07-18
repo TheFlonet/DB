@@ -2,20 +2,15 @@ begin;
 
 -- Domini
 
-create domain CodiceFiscale as varchar(16) not null
-check (length(value)=16);
+create domain CodiceFiscale as varchar(16) not null check (length(value)=16);
 
-create domain TipoCittadino as varchar(32) default 'altro'
-check (value='personale sanitario' or value='personale scolastico' or value='soggetti fragili' or value='altro');
+create domain TipoCittadino as varchar(32) default 'altro' check (value='personale sanitario' or value='personale scolastico' or value='soggetti fragili' or value='altro');
 
-create domain TipoMedico as varchar(32) default 'medico di base'
-check (value='altro medico' or value='medico di base');
+create domain TipoMedico as varchar(32) default 'medico di base' check (value='altro medico' or value='medico di base');
 
-create domain NomeVaccino as varchar(32) not null
-check (value='covidin' or value='COVIDIN' or value='coronax' or value='CORONAX' or value='flustop' or value='FLUSTOP');
+create domain NomeVaccino as varchar(32) not null check (value='covidin' or value='COVIDIN' or value='coronax' or value='CORONAX' or value='flustop' or value='FLUSTOP');
 
-create domain NomeAllergia as varchar(64)
-check (value='amoxicillina' or value='a' or value='b' or value='c');
+create domain NomeAllergia as varchar(64) not null check (value='amoxicillina' or  value='lattosio' or value='solfiti' or value='omeprazolo' value='altro');
 
 -- Tabelle
 
