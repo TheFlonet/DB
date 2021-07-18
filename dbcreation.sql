@@ -29,7 +29,8 @@ create table Cittadino (
   Indirizzo varchar(128) not null,
   Citta varchar(64) not null,
   PrecedentePositività boolean not null default FALSE,
-  Tipo TipoCittadino not null
+  Tipo TipoCittadino not null,
+  check (Cellulare is not null or Email is not null)
 );
 
 create table CentroVaccinale (
@@ -43,7 +44,14 @@ create table Medico (
   Tipo TipoMedico not null,
   Centro integer not null,
   AbilitazioneSingolaDose boolean not null,
-  foreign key (CF) references Cittadino (CF)
+  foreign key (CF) references Cittadino (CF),
+  check (
+    case 
+    when AbilitazioneSingolaDose=TRUE
+    then Tipo='altro medico'
+    else Tipo='medico di base'
+    end
+  )
 );
 
 create table Lotto (
@@ -75,7 +83,14 @@ create table Vaccino (
   DosiRichieste integer not null check (DosiRichieste=1 or DosiRichieste=2),
   Lotto integer not null,
   IntervalloSomministrazione integer,
-  foreign key (Lotto) references Lotto (ID)
+  foreign key (Lotto) references Lotto (ID),
+  check (
+    case
+    when DosiRichieste=1
+    then IntervalloSomministrazione is null
+    else IntervalloSomministrazione is not null
+    end
+  )
 );
 
 create table AppuntamentoVaccinale (
@@ -89,7 +104,8 @@ create table AppuntamentoVaccinale (
   foreign key (Centro) references CentroVaccinale (ID),
   foreign key (Medico) references Medico (CF),
   foreign key (Vaccino) references Vaccino (Nome),
-  foreign key (Cittadino) references Cittadino (CF)
+  foreign key (Cittadino) references Cittadino (CF),
+  check (Cittadino <> Medico)
 );
 
 create table Dispone (

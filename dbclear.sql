@@ -2,11 +2,11 @@ begin;
 
 -- Domini
 
-drop domain if exists CodiceFiscale;
-drop domain if exists NomeAllergia;
-drop domain if exists NomeVaccino;
-drop domain if exists TipoCittadino;
-drop domain if exists TipoMedico;
+drop domain if exists CodiceFiscale cascade;
+drop domain if exists NomeAllergia cascade;
+drop domain if exists NomeVaccino cascade;
+drop domain if exists TipoCittadino cascade;
+drop domain if exists TipoMedico cascade;
 
 -- Tabelle
 
