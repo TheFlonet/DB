@@ -1,3 +1,5 @@
+begin
+
 -- Domini
 
 create domain CodiceFiscale as varchar(16) not null
@@ -124,3 +126,5 @@ create table Dichiara (
   foreign key (Cittadino) references Cittadino (CF),
   foreign key (Allergia) references Allergia (Nome)
 );
+
+commit;
