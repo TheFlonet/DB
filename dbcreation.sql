@@ -4,13 +4,22 @@ begin;
 
 create domain CodiceFiscale as varchar(16) not null check (length(value)=16);
 
-create domain TipoCittadino as varchar(32) default 'altro' check (value='personale sanitario' or value='personale scolastico' or value='soggetti fragili' or value='altro');
+create domain TipoCittadino as varchar(32) default 'altro' 
+check (value='personale sanitario' or 
+value='personale scolastico' or 
+value='soggetto fragile' or 
+value='altro');
 
-create domain TipoMedico as varchar(32) default 'medico di base' check (value='altro medico' or value='medico di base');
+create domain TipoMedico as varchar(32) default 'medico di base' 
+check (value='altro medico' or value='medico di base');
 
-create domain NomeVaccino as varchar(32) not null check (value='covidin' or value='COVIDIN' or value='coronax' or value='CORONAX' or value='flustop' or value='FLUSTOP');
+create domain NomeVaccino as varchar(32) not null 
+check (value='covidin' or value='COVIDIN' or 
+value='coronax' or value='CORONAX' or 
+value='flustop' or value='FLUSTOP');
 
-create domain NomeAllergia as varchar(64) not null check (value='amoxicillina' or  value='lattosio' or value='solfiti' or value='omeprazolo' value='altro');
+create domain NomeAllergia as varchar(64) not null 
+check (value='amoxicillina' or  value='lattosio' or value='solfiti' or value='omeprazolo' value='altro');
 
 -- Tabelle
 
@@ -19,8 +28,8 @@ create table Cittadino (
   Nome varchar(32) not null,
   Cognome varchar(32) not null,
   Eta integer not null check (Eta>=0),
-  Email varchar(128),
-  Cellulare integer check (Cellulare>1000000000 and Cellulare<9999999999),
+  Email varchar(128) unique,
+  Cellulare integer unique check (Cellulare>1000000000 and Cellulare<9999999999),
   Indirizzo varchar(128) not null,
   Citta varchar(64) not null,
   PrecedentePositività boolean not null default FALSE,
@@ -32,6 +41,7 @@ create table CentroVaccinale (
   ID integer primary key,
   Indirizzo varchar(128) not null,
   Citta varchar(64) not null
+  unique (Indirizzo, Città)
 );
 
 create table Medico (
