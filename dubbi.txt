@@ -1,6 +1,4 @@
 relazione possiede tra centro vaccinale e Vaccino
 relazione tra lotto e vaccino (non ho capito che modifica intendeva giorgio)
-chiave primaria di vaccino
-in report va messo cf del soggetto???
-la generalizzazione di medico non è totale???
-con attributi in ordine diverso, ma dispone è completamente inglobata in appuntamento vaccinale, quindi dispone serve???
+
+sarebbe meglio usare snake_case
