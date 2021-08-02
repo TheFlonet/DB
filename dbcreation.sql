@@ -21,7 +21,8 @@ create table Cittadino (
   Indirizzo varchar(128) not null,
   Citta varchar(64) not null,
   PrecedentePositivita boolean not null default FALSE,
-  Tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null, --Tipo TipoCittadino not null, -- meglio smallint per identificare con codice (es. 0, 1, ...)
+  Tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null, 
+    --Tipo TipoCittadino not null, -- meglio smallint per identificare con codice (es. 0, 1, ...)
   check (Cellulare is not null or Email is not null)
 );
 /* 
@@ -43,7 +44,8 @@ create table CentroVaccinale (
 
 create table Medico (
   CF CodiceFiscale primary key,
-  Tipo ENUM('altro medico', 'medico di base') not null, -- Tipo TipoMedico not null,
+  Tipo ENUM('altro medico', 'medico di base') not null, 
+    -- Tipo TipoMedico not null,
   Centro integer not null,
   AbilitazioneSingolaDose boolean not null,
   foreign key (CF) references Cittadino (CF),
@@ -56,7 +58,8 @@ create table Medico (
 );
 
 create table Lotto (
-  ID varchar(6) check (length(ID)=6), -- supponiamo che gli id siano alfanumerici e di lunghezza costante
+  ID varchar(6) check (length(ID)=6), 
+    -- supponiamo che gli id siano alfanumerici e di lunghezza costante
   Tipo NomeVaccino,
   NumDosi integer not null default 500 check (NumDosi>0),
   DataProduzione date not null,
@@ -97,7 +100,8 @@ create table AppuntamentoVaccinale (
   Ora time,
   Centro integer,
   Medico CodiceFiscale,
-  Vaccino NomeVaccino, -- forse va messo il lotto e non il vaccino 
+  Lotto varchar(6) not null,
+  -- Vaccino NomeVaccino, -- forse va messo il lotto e non il vaccino 
   Cittadino CodiceFiscale not null, 
   /*
   si ipotizza che gli appuntamenti vaccinali siano creati in funzione del cittadino
@@ -106,7 +110,8 @@ create table AppuntamentoVaccinale (
   primary key (DataAppuntamento, Ora, Centro),
   foreign key (Centro) references CentroVaccinale (ID),
   foreign key (Medico) references Medico (CF),
-  foreign key (Vaccino) references Vaccino (Nome),
+  foreign key (Lotto) references Lotto(ID),
+  -- foreign key (Vaccino) references Vaccino (Nome),
   foreign key (Cittadino) references Cittadino (CF),
   check (Cittadino <> Medico)
 );
@@ -122,7 +127,7 @@ create table Possiede (
 );
 
 create table RiscontroAllergico (
-  Lotto integer,
+  Lotto varchar(6),
   Allergia integer,
   primary key (Lotto, Allergia),
   foreign key (Lotto) references Lotto (ID),
@@ -136,9 +141,6 @@ create table DichiaraAllergia (
   foreign key (Cittadino) references Cittadino (CF),
   foreign key (Allergia) references Allergia (ID)
 );
-
--- emana un report che indica data e luogo della vaccinazione, 
--- tipo vaccino e numero lotto che hanno causato l’allergia al paziente in questione.
 
 create table Report (
   Centro integer not null,
@@ -154,5 +156,5 @@ create table Report (
   foreign key (Cittadino) references Cittadino (CF),
   foreign key (Medico) references Medico (CF),
   foreign key (Allergia) references Allergia (ID)
-  primary key (DataReport, Vaccino) -- controllare se basta
+  primary key (DataReport, Vaccino) -- controllare se basta, potrebbe cittadino
 );
