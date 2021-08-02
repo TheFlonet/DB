@@ -1,29 +1,30 @@
 -- Domini
 
-create domain CodiceFiscale as varchar(16) not null check (length(value)=16);
+create domain codice_fiscale  as varchar(16) not null check (length(value)=16);
 create domain NomeVaccino as ENUM('Covidin', 'Coronax', 'Flustop');
 
 -- Sequenze
-create sequence IdCentro 
+create sequence id_centro 
 increment by 1111 start 1111;
-create sequence IdAllergia 
+create sequence id_allergia 
+increment by 1 start 1;
+create sequence id_vaccino 
 increment by 1 start 1;
 
 -- Tabelle
 
-create table Cittadino (
-  CF CodiceFiscale primary key,
-  Nome varchar(32) not null,
-  Cognome varchar(32) not null,
-  Eta integer not null check (Eta>=0),
-  Email varchar(128) unique,
-  Cellulare integer unique check (Cellulare>3200000000 and Cellulare<3939999999),
-  Indirizzo varchar(128) not null,
-  Citta varchar(64) not null,
-  PrecedentePositivita boolean not null default FALSE,
-  Tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null, 
-    --Tipo TipoCittadino not null, -- meglio smallint per identificare con codice (es. 0, 1, ...)
-  check (Cellulare is not null or Email is not null)
+create table cittadino (
+  cf codice_fiscale  primary key,
+  nome varchar(32) not null,
+  cognome varchar(32) not null,
+  eta integer not null check (eta>=0),
+  email varchar(128) unique,
+  cellulare integer unique check (cellulare>3200000000 and cellulare<3939999999),
+  indirizzo varchar(128) not null,
+  citta varchar(64) not null,
+  precedentePositivita boolean not null default FALSE,
+  tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null default 'altro',
+  check (cellulare is not null or email is not null)
 );
 /* 
 Nota sugli attributi città:
@@ -31,40 +32,38 @@ al fine di evitare la ripetizione di una stringa per decine di migliaia di volte
 la creazione di una tabella città (con id, nome e opzionalmente altri parametri) a cui riferirsi tramite id 
 Discorsi analogo potrebbe essere fatto con l'attributo indirizzo, creando un'entità indirizzo collegata a città tramite associazione
 tuttavia in questo caso il risparmio in termini di spazio sarebbe minore in quanto 
-VAL(Indirizzo, Cittadino) << VAL(Città, Cittadino)
+VAL(indirizzo, cittadino) << VAL(città, cittadino)
 Il discorso è analogo in tutti i casi in cui trattiamo le città o gli indirizzi
 */
 
-create table CentroVaccinale (
-  ID integer default nextval('IdCentro') primary key,
-  Indirizzo varchar(128) not null,
-  Citta varchar(64) not null, 
-  unique (Indirizzo, Città)
+create table centro_vaccinale (
+  id integer default nextval('id_centro') primary key,
+  indirizzo varchar(128) not null,
+  citta varchar(64) not null, 
+  unique (indirizzo, città)
 );
 
-create table Medico (
-  CF CodiceFiscale primary key,
-  Tipo ENUM('altro medico', 'medico di base') not null, 
-    -- Tipo TipoMedico not null,
-  Centro integer not null,
-  AbilitazioneSingolaDose boolean not null,
-  foreign key (CF) references Cittadino (CF),
+create table medico (
+  cf codice_fiscale  primary key,
+  tipo ENUM('altro medico', 'medico di base') not null,
+  centro integer not null,
+  abilitazione_singola_dose boolean not null,
+  foreign key (cf) references cittadino (cf),
   check (
     case 
-    when AbilitazioneSingolaDose=TRUE then Tipo='altro medico'
-    else Tipo='medico di base'
+    when abilitazione_singola_dose=TRUE then tipo='altro medico'
+    else tipo='medico di base'
     end
   )
 );
 
 create table Lotto (
-  ID varchar(6) check (length(ID)=6), 
-    -- supponiamo che gli id siano alfanumerici e di lunghezza costante
+  ID varchar(6) check (length(ID)=6), -- supponiamo che gli id siano alfanumerici e di lunghezza costante
   Tipo NomeVaccino,
   NumDosi integer not null default 500 check (NumDosi>0),
   DataProduzione date not null,
   DataScadenza date not null,
-  primary key (ID, Tipo) -- id e tipo sono implicitamente dichiarati not null
+  primary key (ID, Tipo)
 );
 /*
 per discorso dosi
@@ -73,88 +72,88 @@ tabella tra centro e lotto ha un numero dosi consumate per un dato lotto
 (relazione possiede da cambiare, un centro possiede i lotti)
 */
 
-create table Allergia (
-  ID integer default nextval('IdAllergia') primary key,
-  Nome varchar(32) primary key 
-  on update cascade
-  on delete cascade -- cascade da valutare (cambia in base alle ipotesi che assumiamo [HP da specificare])
+create table allergia (
+  id integer default nextval('id_allergia') primary key,
+  nome varchar(32) on update cascade on delete cascade 
+  -- cascade da valutare (cambia in base alle ipotesi che assumiamo [HP da specificare])
 );
 
-create table Vaccino (
-  Nome NomeVaccino primary key,
-  EtaMin integer not null check (EtaMin>=0),
-  EtaMax integer not null check (EtaMax>=0 and EtaMax>EtaMin),
-  Efficacia real not null check (Efficacia>0 and Efficacia<=100),
-  DosiRichieste integer not null check (DosiRichieste=1 or DosiRichieste=2),
-  IntervalloSomministrazione integer,
+create table vaccino (
+  id integer default nextval('id_vaccino') primary key,
+  nome nome_vaccino unique,
+  eta_min integer not null check (eta_min>=0),
+  eta_max integer not null check (eta_max>=0 and eta_max>eta_min),
+  efficacia real not null check (efficacia>0 and efficacia<=100),
+  dosi_richieste integer not null check (dosi_richieste=1 or dosi_richieste=2),
+  intervallo_somministrazione integer,
   check (
     case
-    when DosiRichieste=1 then IntervalloSomministrazione is null
-    else IntervalloSomministrazione is not null
+    when dosi_richieste=1 then intervallo_somministrazione is null
+    else intervallo_somministrazione is not null
     end
   )
 );
 
-create table AppuntamentoVaccinale (
-  DataAppuntamento date,
-  Ora time,
-  Centro integer,
-  Medico CodiceFiscale,
-  Lotto varchar(6) not null,
+create table appuntamento_vaccinale (
+  data_appuntamento date,
+  ora time,
+  centro integer,
+  medico codice_fiscale ,
+  lotto varchar(6) not null,
   -- Vaccino NomeVaccino, -- forse va messo il lotto e non il vaccino 
-  Cittadino CodiceFiscale not null, 
+  cittadino codice_fiscale  not null, 
   /*
   si ipotizza che gli appuntamenti vaccinali siano creati in funzione del cittadino
   e non che vengano prima creati i vari appuntamenti e in un secondo momento associati ai cittadini
   */
-  primary key (DataAppuntamento, Ora, Centro),
-  foreign key (Centro) references CentroVaccinale (ID),
-  foreign key (Medico) references Medico (CF),
-  foreign key (Lotto) references Lotto(ID),
+  primary key (data_appuntamento, ora, centro),
+  foreign key (centro) references centro_vaccinale (id),
+  foreign key (medico) references medico (cf),
+  foreign key (lotto) references lotto(id),
   -- foreign key (Vaccino) references Vaccino (Nome),
-  foreign key (Cittadino) references Cittadino (CF),
-  check (Cittadino <> Medico)
+  foreign key (cittadino) references cittadino (cf),
+  check (cittadino <> medico)
 );
 
-create table Possiede (
-  Centro integer,
-  Vaccino NomeVaccino,
-  NumDosi integer not null check (NumDosi>=0),
+create table possiede (
+  centro integer,
+  vaccino integer,
+  num_dosi integer not null check (num_dosi>=0),
   -- da rendere consistente, ogni volta che viene somministrata una dose va sottratto 1
-  primary key (Centro, Vaccino),
-  foreign key (Centro) references CentroVaccinale (ID),
-  foreign key (Vaccino) references Vaccino (Nome)
+  primary key (centro, vaccino),
+  foreign key (centro) references centro_vaccinale (ID),
+  foreign key (vaccino) references vaccino (id)
 );
 
-create table RiscontroAllergico (
-  Lotto varchar(6),
-  Allergia integer,
-  primary key (Lotto, Allergia),
-  foreign key (Lotto) references Lotto (ID),
-  foreign key (Allergia) references Allergia (ID)
+create table riscontro_allergico (
+  lotto varchar(6),
+  allergia integer,
+  primary key (lotto, allergia),
+  foreign key (lotto) references lotto (id),
+  foreign key (allergia) references allergia (id)
 );
 
-create table DichiaraAllergia (
-  Cittadino CodiceFiscale,
-  Allergia integer,
-  primary key (Cittadino, Allergia),
-  foreign key (Cittadino) references Cittadino (CF),
-  foreign key (Allergia) references Allergia (ID)
+create table dichiara_allergia (
+  cittadino codice_fiscale ,
+  allergia integer,
+  primary key (cittadino, allergia),
+  foreign key (cittadino) references cittadino (cf),
+  foreign key (allergia) references allergia (id)
 );
 
-create table Report (
-  Centro integer not null,
-  DataReport date not null,
-  Lotto integer not null,
-  Vaccino NomeVaccino not null,
-  Cittadino CodiceFiscale not null,
-  Medico CodiceFiscale not null,
-  Allergia integer not null,
-  foreign key (Centro) references CentroVaccinale (ID),
-  foreign key (Lotto) references Lotto (ID),
-  foreign key (Vaccino) references Vaccino (Nome),
-  foreign key (Cittadino) references Cittadino (CF),
-  foreign key (Medico) references Medico (CF),
-  foreign key (Allergia) references Allergia (ID)
-  primary key (DataReport, Vaccino) -- controllare se basta, potrebbe cittadino
+create table report (
+  centro integer not null,
+  data_report date not null,
+  lotto integer not null,
+  vaccino integer not null,
+  cittadino codice_fiscale  not null,
+  medico codice_fiscale  not null,
+  allergia integer not null,
+  foreign key (centro) references centro_vaccinale (id),
+  foreign key (lotto) references lotto (id),
+  foreign key (vaccino) references vaccino (id),
+  foreign key (cittadino) references cittadino (cf),
+  foreign key (medico) references medico (cf),
+  foreign key (allergia) references allergi(id)
+  primary key (data_report, vaccino) -- controllare se basta, potrebbe cittadino
 );
