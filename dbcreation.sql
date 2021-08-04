@@ -57,13 +57,13 @@ create table medico (
   )
 );
 
-create table Lotto (
-  ID varchar(6) check (length(ID)=6), -- supponiamo che gli id siano alfanumerici e di lunghezza costante
-  Tipo NomeVaccino,
-  NumDosi integer not null default 500 check (NumDosi>0),
-  DataProduzione date not null,
-  DataScadenza date not null,
-  primary key (ID, Tipo)
+create table lotto (
+  id varchar(6) check (length(id)=6), -- supponiamo che gli id siano alfanumerici e di lunghezza costante
+  tipo nome_vaccino,
+  num_dosi integer not null default 500 check (num_dosi>0),
+  data_produzione date not null,
+  data_scadenza date not null,
+  primary key (id, tipo)
 );
 /*
 per discorso dosi
@@ -121,7 +121,7 @@ create table possiede (
   num_dosi integer not null check (num_dosi>=0),
   -- da rendere consistente, ogni volta che viene somministrata una dose va sottratto 1
   primary key (centro, vaccino),
-  foreign key (centro) references centro_vaccinale (ID),
+  foreign key (centro) references centro_vaccinale (id),
   foreign key (vaccino) references vaccino (id)
 );
 

@@ -1,4 +1,0 @@
-relazione possiede tra centro vaccinale e Vaccino
-relazione tra lotto e vaccino (non ho capito che modifica intendeva giorgio)
-
-sarebbe meglio usare snake_case
