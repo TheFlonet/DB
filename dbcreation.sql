@@ -72,13 +72,7 @@ tabella tra centro e lotto ha un numero dosi consumate per un dato lotto
 (relazione possiede da cambiare, un centro possiede i lotti)
 */
 
-create table allergia (
-  id integer default nextval('id_allergia') primary key,
-  nome varchar(32) on update cascade on delete cascade 
-  -- cascade da valutare (cambia in base alle ipotesi che assumiamo [HP da specificare])
-);
-
-create table vaccino (
+create table tipo_vaccino (
   id integer default nextval('id_vaccino') primary key,
   nome nome_vaccino unique,
   eta_min integer not null check (eta_min>=0),
@@ -100,7 +94,6 @@ create table appuntamento_vaccinale (
   centro integer,
   medico codice_fiscale ,
   lotto varchar(6) not null,
-  -- Vaccino NomeVaccino, -- forse va messo il lotto e non il vaccino 
   cittadino codice_fiscale  not null, 
   /*
   si ipotizza che gli appuntamenti vaccinali siano creati in funzione del cittadino
@@ -155,5 +148,5 @@ create table report (
   foreign key (cittadino) references cittadino (cf),
   foreign key (medico) references medico (cf),
   foreign key (allergia) references allergi(id)
-  primary key (data_report, vaccino) -- controllare se basta, potrebbe cittadino
+  primary key (cittadino, data_report)
 );
