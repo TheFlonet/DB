@@ -1,0 +1,7 @@
+1) Inserito ulteriore passaggio nella ristrutturazione della generalizzazione di cittadino
+2) Inserire attributo "Tipo Vaccino" in report (?)
+3) Inserire attributo "Tipo" per la rimozione della generalizzazione di Vaccino e quindi con conseguente inserimento della business rule "Attributo x può non essere nullo sse è un determinato tipo" (?) 
+4) Possibile Ridondanza Età con CF (?)
+5) Pensare possibilità di creare entità contatti per suddividere attributi cittadino (?)
+6) verrà somministrato collegato a lotto, perché? (?)
+7) è corretto che medico non partecipi all'associazione con verrà somministrato per indicare chi somministra il vaccino (?)
