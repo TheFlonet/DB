@@ -5,3 +5,7 @@
 5) Pensare possibilità di creare entità contatti per suddividere attributi cittadino (?)
 6) verrà somministrato collegato a lotto, perché? (?)
 7) è corretto che medico non partecipi all'associazione con verrà somministrato per indicare chi somministra il vaccino (?)
+
+
+8) Nello schema relazionale ho segnato in grassetto le cose che non mi tornano.
+9) E se medico fosse un entità slegata da cittadino? In questo modo avrebbe più senso lo schema relazionale.
