@@ -22,7 +22,7 @@ create table cittadino (
   cellulare integer unique check (cellulare>3200000000 and cellulare<3939999999),
   indirizzo varchar(128) not null,
   citta varchar(64) not null,
-  precedentePositivita boolean not null default FALSE,
+  precedente_positivita boolean not null default FALSE,
   tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null default 'altro',
   check (cellulare is not null or email is not null)
 );
@@ -76,10 +76,10 @@ create table tipo_vaccino (
   id integer default nextval('id_vaccino') primary key,
   nome nome_vaccino unique,
   eta_min integer not null check (eta_min>=0),
-  eta_max integer not null check (eta_max>=0 and eta_max>eta_min),
+  eta_max integer not null check (eta_max>eta_min),
   efficacia real not null check (efficacia>0 and efficacia<=100),
   dosi_richieste integer not null check (dosi_richieste=1 or dosi_richieste=2),
-  intervallo_somministrazione integer,
+  intervallo_somministrazione integer default null check (intervallo_somministrazione>0 or intervallo_somministrazione is null),
   check (
     case
     when dosi_richieste=1 then intervallo_somministrazione is null
@@ -108,7 +108,7 @@ create table appuntamento_vaccinale (
   check (cittadino <> medico)
 );
 
-create table possiede (
+create table possiede_dosi (
   centro integer,
   vaccino integer,
   num_dosi integer not null check (num_dosi>=0),
@@ -118,6 +118,7 @@ create table possiede (
   foreign key (vaccino) references vaccino (id)
 );
 
+-- ??
 create table riscontro_allergico (
   lotto varchar(6),
   allergia integer,
@@ -126,6 +127,7 @@ create table riscontro_allergico (
   foreign key (allergia) references allergia (id)
 );
 
+-- ??
 create table dichiara_allergia (
   cittadino codice_fiscale ,
   allergia integer,

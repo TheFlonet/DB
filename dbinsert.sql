@@ -68,11 +68,11 @@ begin;
 
 -- lotto
   insert into lotto
-  value (123456, '2020-11-05', '2021-02-23', 'covidin');
+  value ('cn0987', '2020-11-05', '2021-02-23', 'covidin');
   insert into lotto
-  value (654321, '2021-01-21', '2021-04-17', 'coronax');
+  value ('1234cx', '2021-01-21', '2021-04-17', 'coronax');
   insert into lotto
-  value (987654, '2021-03-13', '2021-06-30', 'flustop');
+  value ('f4567p', '2021-03-13', '2021-06-30', 'flustop');
 
 -- allergia
   insert into allergia
@@ -121,7 +121,12 @@ begin;
   value (123456, 'solfiti');
 
 -- Vaccino
--- da rivedere
+  insert into tipo_vaccino (nome, eta_min, eta_max, efficacia, dosi_richieste, intervallo_somministrazione)
+  value ('Covidin', 12, 85, 90)
+  insert into tipo_vaccino (nome, eta_min, eta_max, efficacia, dosi_richieste, intervallo_somministrazione)
+  value ('Coronax', 45, 150, 99)
+  insert into tipo_vaccino (nome, eta_min, eta_max, efficacia, dosi_richieste)
+  value ('Flustop', 65, 100, 95)
 
 -- appuntamento_vaccinale
 -- da rivedere
@@ -146,11 +151,5 @@ begin;
   value ('2021-06-15', '16:17', 444444, 'antdgv70a11a123b', '', 'gbrzpa91a11a123b');
   insert into appuntamento_vaccinale
   value ('2021-07-15', '09:20', 444444, 'antdgv70a11a123b', '', 'gbrzpa91a11a123b');
-
--- Possiede
--- da rivedere
-
--- Report
--- da rivedere
 
 commit;
