@@ -118,24 +118,6 @@ create table possiede_dosi (
   foreign key (vaccino) references vaccino (id)
 );
 
--- ??
-create table riscontro_allergico (
-  lotto varchar(6),
-  allergia integer,
-  primary key (lotto, allergia),
-  foreign key (lotto) references lotto (id),
-  foreign key (allergia) references allergia (id)
-);
-
--- ??
-create table dichiara_allergia (
-  cittadino codice_fiscale ,
-  allergia integer,
-  primary key (cittadino, allergia),
-  foreign key (cittadino) references cittadino (cf),
-  foreign key (allergia) references allergia (id)
-);
-
 create table report (
   centro integer not null,
   data_report date not null,
