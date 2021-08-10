@@ -9,3 +9,4 @@
 
 8) Nello schema relazionale ho segnato in grassetto le cose che non mi tornano.
 9) E se medico fosse un entità slegata da cittadino? In questo modo avrebbe più senso lo schema relazionale.
+10) In report CF medico != CF cittadino, bisogna segnalarlo in qualche modo?
