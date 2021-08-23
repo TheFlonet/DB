@@ -1,7 +1,12 @@
 -- Domini
 
 create domain codice_fiscale  as varchar(16) not null check (length(value)=16);
-create domain NomeVaccino as ENUM('Covidin', 'Coronax', 'Flustop');
+
+-- Tipi
+
+create type nome_vaccino as ENUM('Covidin', 'Coronax', 'Flustop');
+create type tipo_cittadino as ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro');
+create type tipo_medico as ENUM('altro medico', 'medico di base');
 
 -- Sequenze
 create sequence id_centro 
@@ -23,7 +28,7 @@ create table cittadino (
   indirizzo varchar(128) not null,
   citta varchar(64) not null,
   precedente_positivita boolean not null default FALSE,
-  tipo ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro') not null default 'altro',
+  tipo tipo_cittadino not null default 'altro',
   check (cellulare is not null or email is not null)
 );
 /* 
@@ -37,15 +42,15 @@ Il discorso è analogo in tutti i casi in cui trattiamo le città o gli indirizz
 */
 
 create table centro_vaccinale (
-  id integer default nextval('id_centro') primary key,
+  cod integer default nextval('id_centro') primary key,
   indirizzo varchar(128) not null,
   citta varchar(64) not null, 
-  unique (indirizzo, città)
+  unique (indirizzo, citta)
 );
 
 create table medico (
   cf codice_fiscale  primary key,
-  tipo ENUM('altro medico', 'medico di base') not null,
+  tipo tipo_medico not null,
   centro integer not null,
   abilitazione_singola_dose boolean not null,
   foreign key (cf) references cittadino (cf),
@@ -58,12 +63,12 @@ create table medico (
 );
 
 create table lotto (
-  id varchar(6) check (length(id)=6), -- supponiamo che gli id siano alfanumerici e di lunghezza costante
-  tipo nome_vaccino,
+  cod varchar(6) check (length(cod)=6) unique, -- supponiamo che gli id siano alfanumerici e di lunghezza costante
+  tipo nome_vaccino unique,
   num_dosi integer not null default 500 check (num_dosi>0),
   data_produzione date not null,
-  data_scadenza date not null,
-  primary key (id, tipo)
+  data_scadenza date not null check (data_scadenza > data_produzione),
+  primary key (cod, tipo)
 );
 /*
 per discorso dosi
@@ -73,7 +78,7 @@ tabella tra centro e lotto ha un numero dosi consumate per un dato lotto
 */
 
 create table tipo_vaccino (
-  id integer default nextval('id_vaccino') primary key,
+  cod integer default nextval('id_vaccino') primary key,
   nome nome_vaccino unique,
   eta_min integer not null check (eta_min>=0),
   eta_max integer not null check (eta_max>eta_min),
@@ -92,7 +97,6 @@ create table appuntamento_vaccinale (
   data_appuntamento date,
   ora time,
   centro integer,
-  medico codice_fiscale ,
   lotto varchar(6) not null,
   cittadino codice_fiscale  not null, 
   /*
@@ -100,12 +104,9 @@ create table appuntamento_vaccinale (
   e non che vengano prima creati i vari appuntamenti e in un secondo momento associati ai cittadini
   */
   primary key (data_appuntamento, ora, centro),
-  foreign key (centro) references centro_vaccinale (id),
-  foreign key (medico) references medico (cf),
-  foreign key (lotto) references lotto(id),
-  -- foreign key (Vaccino) references Vaccino (Nome),
-  foreign key (cittadino) references cittadino (cf),
-  check (cittadino <> medico)
+  foreign key (centro) references centro_vaccinale (cod),
+  foreign key (lotto) references lotto(cod),
+  foreign key (cittadino) references cittadino (cf)
 );
 
 create table possiede_dosi (
@@ -114,23 +115,27 @@ create table possiede_dosi (
   num_dosi integer not null check (num_dosi>=0),
   -- da rendere consistente, ogni volta che viene somministrata una dose va sottratto 1
   primary key (centro, vaccino),
-  foreign key (centro) references centro_vaccinale (id),
-  foreign key (vaccino) references vaccino (id)
+  foreign key (centro) references centro_vaccinale (cod),
+  foreign key (vaccino) references tipo_vaccino (cod)
+);
+
+create table allergia (
+  nome varchar(128) not null,
+  cittadino codice_fiscale,
+  foreign key (cittadino) references cittadino (cf)
 );
 
 create table report (
   centro integer not null,
   data_report date not null,
-  lotto integer not null,
+  lotto varchar(6) not null,
   vaccino integer not null,
-  cittadino codice_fiscale  not null,
+  cittadino codice_fiscale,
   medico codice_fiscale  not null,
-  allergia integer not null,
-  foreign key (centro) references centro_vaccinale (id),
-  foreign key (lotto) references lotto (id),
-  foreign key (vaccino) references vaccino (id),
+  foreign key (centro) references centro_vaccinale (cod),
+  foreign key (lotto) references lotto (cod),
+  foreign key (vaccino) references tipo_vaccino (cod),
   foreign key (cittadino) references cittadino (cf),
   foreign key (medico) references medico (cf),
-  foreign key (allergia) references allergi(id)
   primary key (cittadino, data_report)
 );
