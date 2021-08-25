@@ -4,7 +4,6 @@ create domain codice_fiscale  as varchar(16) not null check (length(value)=16);
 
 -- Tipi
 
-create type nome_vaccino as ENUM('Covidin', 'Coronax', 'Flustop');
 create type tipo_cittadino as ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro');
 create type tipo_medico as ENUM('altro medico', 'medico di base');
 
@@ -24,7 +23,7 @@ create table cittadino (
   cognome varchar(32) not null,
   eta integer not null check (eta>=0),
   email varchar(128) unique,
-  cellulare integer unique check (cellulare>3200000000 and cellulare<3939999999),
+  cellulare bigint unique check (cellulare>3200000000 and cellulare<3939999999),
   indirizzo varchar(128) not null,
   citta varchar(64) not null,
   precedente_positivita boolean not null default FALSE,
@@ -79,7 +78,7 @@ tabella tra centro e lotto ha un numero dosi consumate per un dato lotto
 
 create table tipo_vaccino (
   cod integer default nextval('id_vaccino') primary key,
-  nome nome_vaccino unique,
+  nome varchar(32) unique,
   eta_min integer not null check (eta_min>=0),
   eta_max integer not null check (eta_max>eta_min),
   efficacia real not null check (efficacia>0 and efficacia<=100),
