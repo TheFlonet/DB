@@ -53,18 +53,17 @@ begin;
   values ('Via degli artisti 7', 'Genova');
 
 -- Medico
--- SERVE AGGIUNGERE ID, CF NON VA BENE COME CHIAVE
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('zmllei70a11a123b', 'medico di base', 2222, FALSE);
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('flnlnr66a11a123b', 'altro medico', 2222, TRUE);
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('brcpio85a11a123b', 'medico di base', 1111, FALSE);
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('mntfda60a51a123b', 'altro medico', 3333, TRUE);
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('dgvant70a11a123b', 'altro medico', 4444, TRUE);
-  insert into medico
+  insert into medico (cf, tipo, centro, abilitazione_singola_dose)
   values ('ctsmta89a11a123b', 'altro medico', 5555, TRUE);
 
 -- Lotto
@@ -104,6 +103,8 @@ begin;
   values ('2021-06-15', '16:17', 4444, 'cn0987', 'zpagbr91a11a123b');
   insert into appuntamento_vaccinale
   values ('2021-07-15', '09:20', 4444, 'cn0987', 'zpagbr91a11a123b');
+  insert into appuntamento_vaccinale
+  values ('2021-03-03', '09:20', 2222, '1234cx', 'zmllei70a11a123b');
 
 -- Possiede Dosi
   insert into possiede_dosi
@@ -119,10 +120,14 @@ begin;
 
 -- Allergia
 insert into allergia
-values ();
+values ('lattosio', 'dptfri11a11a123b');
+insert into allergia
+values ('amoxicillina', 'zmllei70a11a123b');
+insert into allergia
+values ('nichel', 'flnlnr66a11a123b');
 
 -- Report
 insert into report
-values ();
+values (2222, '2021-03-03', 'cn0987', 2, 'zmllei70a11a123b', 2);
 
 commit;

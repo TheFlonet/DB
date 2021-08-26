@@ -1,0 +1,6 @@
+[ ] aggiornare la ristrutturazione della generalizzazione di cittadino
+	forse va cambiata, allergia è diventata associazione nell'er rivisto
+[x] completare insert.sql
+[x] aggiungere id a medico
+[ ] fare edit.sql
+[ ] inserire on delete / on update

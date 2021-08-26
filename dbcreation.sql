@@ -6,18 +6,21 @@ create domain codice_fiscale  as varchar(16) not null check (length(value)=16);
 
 create type tipo_cittadino as ENUM('personale sanitario', 'personale scolastico', 'soggetto fragile', 'altro');
 create type tipo_medico as ENUM('altro medico', 'medico di base');
+create type nome_vaccino as ENUM('Covidin', 'Coronax', 'Flustop');
 
 -- Sequenze
-create sequence id_centro 
+create sequence if not exists id_centro 
 increment by 1111 start 1111;
-create sequence id_allergia 
+create sequence if not exists id_medico
 increment by 1 start 1;
-create sequence id_vaccino 
+create sequence if not exists id_allergia 
+increment by 1 start 1;
+create sequence if not exists id_vaccino 
 increment by 1 start 1;
 
 -- Tabelle
 
-create table cittadino (
+create table if not exists cittadino (
   cf codice_fiscale  primary key,
   nome varchar(32) not null,
   cognome varchar(32) not null,
@@ -40,15 +43,16 @@ VAL(indirizzo, cittadino) << VAL(città, cittadino)
 Il discorso è analogo in tutti i casi in cui trattiamo le città o gli indirizzi
 */
 
-create table centro_vaccinale (
+create table if not exists centro_vaccinale (
   cod integer default nextval('id_centro') primary key,
   indirizzo varchar(128) not null,
   citta varchar(64) not null, 
   unique (indirizzo, citta)
 );
 
-create table medico (
-  cf codice_fiscale  primary key,
+create table if not exists medico (
+  cod integer default nextval('id_medico') primary key,
+  cf codice_fiscale  unique,
   tipo tipo_medico not null,
   centro integer not null,
   abilitazione_singola_dose boolean not null,
@@ -61,7 +65,7 @@ create table medico (
   )
 );
 
-create table lotto (
+create table if not exists lotto (
   cod varchar(6) check (length(cod)=6) unique, -- supponiamo che gli id siano alfanumerici e di lunghezza costante
   tipo nome_vaccino unique,
   num_dosi integer not null default 500 check (num_dosi>0),
@@ -76,7 +80,7 @@ tabella tra centro e lotto ha un numero dosi consumate per un dato lotto
 (relazione possiede da cambiare, un centro possiede i lotti)
 */
 
-create table tipo_vaccino (
+create table if not exists tipo_vaccino (
   cod integer default nextval('id_vaccino') primary key,
   nome varchar(32) unique,
   eta_min integer not null check (eta_min>=0),
@@ -92,7 +96,7 @@ create table tipo_vaccino (
   )
 );
 
-create table appuntamento_vaccinale (
+create table if not exists appuntamento_vaccinale (
   data_appuntamento date,
   ora time,
   centro integer,
@@ -108,7 +112,7 @@ create table appuntamento_vaccinale (
   foreign key (cittadino) references cittadino (cf)
 );
 
-create table possiede_dosi (
+create table if not exists possiede_dosi (
   centro integer,
   vaccino integer,
   num_dosi integer not null check (num_dosi>=0),
@@ -118,23 +122,23 @@ create table possiede_dosi (
   foreign key (vaccino) references tipo_vaccino (cod)
 );
 
-create table allergia (
+create table if not exists allergia (
   nome varchar(128) not null,
   cittadino codice_fiscale,
   foreign key (cittadino) references cittadino (cf)
 );
 
-create table report (
+create table if not exists report (
   centro integer not null,
   data_report date not null,
   lotto varchar(6) not null,
   vaccino integer not null,
   cittadino codice_fiscale,
-  medico codice_fiscale  not null,
+  medico integer not null,
   foreign key (centro) references centro_vaccinale (cod),
   foreign key (lotto) references lotto (cod),
   foreign key (vaccino) references tipo_vaccino (cod),
   foreign key (cittadino) references cittadino (cf),
-  foreign key (medico) references medico (cf),
+  foreign key (medico) references medico (cod),
   primary key (cittadino, data_report)
 );
