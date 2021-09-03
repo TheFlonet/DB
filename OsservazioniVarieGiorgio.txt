@@ -27,3 +27,22 @@
 10) In report CF medico != CF cittadino, bisogna segnalarlo in qualche modo?
 	Questo non l'ho capito aahahahahah
 
+**********************************************************************************************************************************************************************************************************************************************
+
+Riflessioni clausole foreign key:
+Medico: ok, neanche secondo me on update è necessario per il cf in quanto è fisso non cambia mai.
+
+Appuntamento vaccinale - Centro: sì, se quel centro dovesse chiudere semplicemente si esauriscono tutte le prenotazioni già effettuate e non è più possibile effettuarne in quel centro.
+Appuntamento vaccinale - Lotto: non lo so se è come centro, se dovesse capitare che un tipo di vaccino non fosse più disponibile la somministrazione dovrebbe accadere qualcosa forse (?).
+Appuntamento vaccinale - Cittadino: sì, stessa cosa di medico per cf
+
+Possiede dosi - Centro: sì, stessa cosa di appuntamento vaccinale
+Possiede dosi - Vaccino: Secondo me si può pensare all'eventualità in cui un vaccino venga eliminato per motivi x o rinominato
+
+Allergia - cittadino: sì, stessa cosa di medico per cf
+
+Report - centro: sì, stesso discorso
+Report - Lotto: *vedi riflessione sopra*
+Report - cittadino: sì cf statico
+Report - medico: probabilmente sì
+
