@@ -56,7 +56,7 @@ create table if not exists medico (
   tipo tipo_medico not null,
   centro integer not null,
   abilitazione_singola_dose boolean not null,
-  foreign key (cf) references cittadino (cf),
+  foreign key (cf) references cittadino (cf) on delete cascade,
   check (
     case 
     when abilitazione_singola_dose=TRUE then tipo='altro medico'
@@ -107,7 +107,7 @@ create table if not exists appuntamento_vaccinale (
   e non che vengano prima creati i vari appuntamenti e in un secondo momento associati ai cittadini
   */
   primary key (data_appuntamento, ora, centro),
-  foreign key (centro) references centro_vaccinale (cod),
+  foreign key (centro) references centro_vaccinale (cod) on update cascade,
   foreign key (lotto) references lotto(cod),
   foreign key (cittadino) references cittadino (cf)
 );

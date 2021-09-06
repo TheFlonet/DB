@@ -1,5 +1,0 @@
-tipo vaccino di report è superfluo (ricavabile da lotto)
-
-età ricavabile da CF
-
-tipo vaccino in lotto (si può ricavare da associazione contiene)
