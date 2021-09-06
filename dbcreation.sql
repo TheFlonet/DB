@@ -108,8 +108,8 @@ create table if not exists appuntamento_vaccinale (
   */
   primary key (data_appuntamento, ora, centro),
   foreign key (centro) references centro_vaccinale (cod) on update cascade,
-  foreign key (lotto) references lotto(cod),
-  foreign key (cittadino) references cittadino (cf)
+  foreign key (lotto) references lotto(cod) on update cascade,
+  foreign key (cittadino) references cittadino (cf) on delete cascade
 );
 
 create table if not exists possiede_dosi (
@@ -118,14 +118,14 @@ create table if not exists possiede_dosi (
   num_dosi integer not null check (num_dosi>=0),
   -- da rendere consistente, ogni volta che viene somministrata una dose va sottratto 1
   primary key (centro, vaccino),
-  foreign key (centro) references centro_vaccinale (cod),
-  foreign key (vaccino) references tipo_vaccino (cod)
+  foreign key (centro) references centro_vaccinale (cod) on update cascade,
+  foreign key (vaccino) references tipo_vaccino (cod) on update cascade
 );
 
 create table if not exists allergia (
   nome varchar(128) not null,
   cittadino codice_fiscale,
-  foreign key (cittadino) references cittadino (cf)
+  foreign key (cittadino) references cittadino (cf) on delete cascade
 );
 
 create table if not exists report (
@@ -135,10 +135,10 @@ create table if not exists report (
   vaccino integer not null,
   cittadino codice_fiscale,
   medico integer not null,
-  foreign key (centro) references centro_vaccinale (cod),
-  foreign key (lotto) references lotto (cod),
-  foreign key (vaccino) references tipo_vaccino (cod),
-  foreign key (cittadino) references cittadino (cf),
-  foreign key (medico) references medico (cod),
+  foreign key (centro) references centro_vaccinale (cod) on update cascade,
+  foreign key (lotto) references lotto (cod) on update cascade,
+  foreign key (vaccino) references tipo_vaccino (cod) on update cascade,
+  foreign key (cittadino) references cittadino (cf) on delete cascade,
+  foreign key (medico) references medico (cod) on update cascade,
   primary key (cittadino, data_report)
 );
