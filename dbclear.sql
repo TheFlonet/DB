@@ -15,6 +15,7 @@ drop type if exists tipo_medico cascade;
 drop sequence if exists id_centro cascade;
 drop sequence if exists id_allergia cascade;
 drop sequence if exists id_vaccino cascade;
+drop sequence if exists id_medico cascade;
 
 -- Tabelle
 

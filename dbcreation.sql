@@ -137,7 +137,7 @@ create table if not exists report (
   medico integer not null,
   foreign key (centro) references centro_vaccinale (cod) on update cascade,
   foreign key (lotto) references lotto (cod) on update cascade,
-  foreign key (vaccino) references tipo_vaccino (cod) on update cascade,
+  foreign key (vaccino) references tipo_vaccino (cod),
   foreign key (cittadino) references cittadino (cf) on delete cascade,
   foreign key (medico) references medico (cod) on update cascade,
   primary key (cittadino, data_report)
