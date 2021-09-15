@@ -8,7 +8,7 @@ begin;
 -- Ogni sera viene stilato un rapporto che indica quante vaccinazioni sono state fatte nella giornata in tutti i centri vaccinali suddivise per categoria di cittadino.
 select c.tipo, count(*)
 from appuntamento_vaccinale av join cittadino c on av.cittadino = c.cf
-where av.data_appuntamento = '2021-01-15'
+where av.data_appuntamento = CURRENT_DATE
 group by c.tipo;
 
 -- Ogni sera, ogni centro vaccinale fa l’inventario del numero di dosi ancora disponibili per ogni vaccino
@@ -27,11 +27,11 @@ where cittadino = 'dptfri11a11a123b';
 
 update possiede_dosi
 set vaccino = 1
-where centro = 2222 and vaccino = 2;    --errore, esiste già come tupla--
+where centro = 2222 and vaccino = 2;    --errore, esiste già come tupla
 
 update possiede_dosi
 set vaccino = 6
-where centro = 2222 and vaccino = 2;    --non esiste vaccino 6--
+where centro = 2222 and vaccino = 2;    --non esiste vaccino 6
 
 
 update appuntamento_vaccinale

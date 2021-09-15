@@ -73,12 +73,6 @@ create table if not exists lotto (
   data_scadenza date not null check (data_scadenza > data_produzione),
   primary key (cod, tipo)
 );
-/*
-per discorso dosi
-tabella lotto ha il numero di dosi
-tabella tra centro e lotto ha un numero dosi consumate per un dato lotto 
-(relazione possiede da cambiare, un centro possiede i lotti)
-*/
 
 create table if not exists tipo_vaccino (
   cod integer default nextval('id_vaccino') primary key,
