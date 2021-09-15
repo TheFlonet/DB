@@ -36,17 +36,17 @@ where centro = 2222 and vaccino = 2;    --non esiste vaccino 6--
 
 update appuntamento_vaccinale
 set ora = '17:30:00'
-where data_appuntamento = '2021/03/03' and ora = '09:20:00' and centro = '2222';
+where data_appuntamento = '2021/03/03' and ora = '09:20:00' and centro = 2222;
 
 update appuntamento_vaccinale
 set data_appuntamento = '2021/04/03'
-where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
+where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = 2222;
 
 update appuntamento_vaccinale
-set centro = '88888'
-where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
+set centro = 8888
+where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = 2222;
 
--- cittadino
+-- medico
 update cittadino 
 set cf='1234567890abcdef'
 where cf='zmllei70a11a123b';
@@ -83,7 +83,7 @@ where centro = 2222 and vaccino = 1;
 delete from appuntamento_vaccinale
 where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
 
--- cittadino 
+-- medico 
 delete from cittadino 
 where cf='dgvant70a11a123b';
 -- provoca la rimozione anche della entry ('dgvant70a11a123b', 'altro medico', 4444, TRUE) da medico
