@@ -17,7 +17,21 @@ from possiede_dosi
 order by centro, vaccino;
 
 -- Ogni fine settimana, viene stilato un report che indica quante vaccinazioni sono state fatte per ogni vaccino per ognuna delle categorie di cittadini e quante di queste abbiano causato allergie.
+with num_tot_vaccino as(
+    select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_vaccino
+    from appuntamento_vaccinale av join lotto l on av.lotto = l.cod join cittadino c on av.cittadino = c.cf
+    group by c.tipo, l.tipo
+),
+     num_tot_report as(
+         select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_report
+         from report r join cittadino c on r.cittadino = c.cf join lotto l on r.lotto = l.cod
+         where r.data_report between CURRENT_DATE and CURRENT_DATE-7
+         group by c.tipo, l.tipo
+     )
 
+select v.tipo_cittadino, v.tipo_vaccino, num_vaccino, num_report
+from num_tot_vaccino v, num_tot_report r
+where v.tipo_cittadino = r.tipo_cittadino and v.tipo_vaccino = r.tipo_vaccino;
 
 --edit--
 update allergia
