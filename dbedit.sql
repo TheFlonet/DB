@@ -57,29 +57,25 @@ update appuntamento_vaccinale
 set centro = 8888
 where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = 2222;
 
--- medico
 update cittadino 
-set cf='1234567890abcdef'
-where cf='zmllei70a11a123b';
+set cod=1010
+where cod=8;
 
 update cittadino 
-set cf='1234567890abcdef'
-where cf='dgvant70a11a123b';
--- queste query non vengono eseguite perché il cf della clausola where è referenziato anche in altre tabelle
+set cf=109
+where cf=17;
 
--- report
 update centro_vaccinale 
-set cod='1234' 
-where cod='2222';
+set cod=1234 
+where cod=2;
 
 update lotto
 set cod='0987cx'
 where cod='1234cx';
 
 update medico
-set cod='12'
-where cod='2';
--- queste operazioni portano un cambiamento anche nella tupla di report
+set cod=12
+where cod=2;
 
 --delete--
 delete from allergia
@@ -93,22 +89,18 @@ where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
 
 -- medico 
 delete from cittadino 
-where cf='dgvant70a11a123b';
+where cod=17;
 -- provoca la rimozione anche della entry ('dgvant70a11a123b', 'altro medico', 4444, TRUE) da medico
 
 -- report
 delete from centro_vaccinale 
-where cod=2222;
+where cod=2;
 
 delete from lotto 
 where cod='cn0987';
 
-delete from medico 
-where cod=2;
--- queste operazioni non vengono portate a termine perché i valori sono referenziati in altre tabelle
-
 delete from cittadino 
-where cf='zmllei70a11a123b';
--- l'operazione va a buon fine e porta alla cancellazione del report relativo al cf indicato
+where cod=8;
+-- queste operazioni non vengono portate a termine perché i valori sono referenziati in altre tabelle
 
 commit;
