@@ -18,17 +18,15 @@ order by centro, vaccino;
 
 -- Ogni fine settimana, viene stilato un report che indica quante vaccinazioni sono state fatte per ogni vaccino per ognuna delle categorie di cittadini e quante di queste abbiano causato allergie.
 with num_tot_vaccino as(
-    select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_vaccino
-    from appuntamento_vaccinale av join lotto l on av.lotto = l.cod join cittadino c on av.cittadino = c.cf
-    group by c.tipo, l.tipo
-),
-     num_tot_report as(
-         select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_report
-         from report r join cittadino c on r.cittadino = c.cf join lotto l on r.lotto = l.cod
-         where r.data_report between CURRENT_DATE and CURRENT_DATE-7
-         group by c.tipo, l.tipo
-     )
-
+  select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_vaccino
+  from appuntamento_vaccinale av join lotto l on av.lotto = l.cod join cittadino c on av.cittadino = c.cf
+  group by c.tipo, l.tipo
+), num_tot_report as(
+  select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_report
+  from report r join cittadino c on r.cittadino = c.cf join lotto l on r.lotto = l.cod
+  where r.data_report between CURRENT_DATE and CURRENT_DATE-7
+  group by c.tipo, l.tipo
+  )
 select v.tipo_cittadino, v.tipo_vaccino, num_vaccino, num_report
 from num_tot_vaccino v, num_tot_report r
 where v.tipo_cittadino = r.tipo_cittadino and v.tipo_vaccino = r.tipo_vaccino;
@@ -38,7 +36,6 @@ update allergia
 set cittadino = 'dgzrti85a51a123b'
 where cittadino = 'dptfri11a11a123b';
 
-
 update possiede_dosi
 set vaccino = 1
 where centro = 2222 and vaccino = 2;    --errore, esiste già come tupla
@@ -46,7 +43,6 @@ where centro = 2222 and vaccino = 2;    --errore, esiste già come tupla
 update possiede_dosi
 set vaccino = 6
 where centro = 2222 and vaccino = 2;    --non esiste vaccino 6
-
 
 update appuntamento_vaccinale
 set ora = '17:30:00'
@@ -84,15 +80,12 @@ set cod='12'
 where cod='2';
 -- queste operazioni portano un cambiamento anche nella tupla di report
 
-
 --delete--
 delete from allergia
 where cittadino = 'dgzrti85a51ab';  --cf errato--
 
-
 delete from possiede_dosi
 where centro = 2222 and vaccino = 1;
-
 
 delete from appuntamento_vaccinale
 where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
