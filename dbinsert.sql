@@ -119,18 +119,17 @@ begin;
   values (5555, 1, 500);
 
 -- Allergia
-insert into allergia
-values ('lattosio', 'dptfri11a11a123b');
-insert into allergia
-values ('amoxicillina', 'zmllei70a11a123b');
-insert into allergia
-values ('nichel', 'flnlnr66a11a123b');
+  insert into allergia
+  values ('lattosio', 'dptfri11a11a123b');
+  insert into allergia
+  values ('amoxicillina', 'zmllei70a11a123b');
+  insert into allergia
+  values ('nichel', 'flnlnr66a11a123b');
 
 -- Report
-insert into report
-values (2222, '2021-03-03', '123cx', 2, 'zmllei70a11a123b', 2);
-
-insert into report
-values (5555, '2021-05-01', 'cn0987', 2, 'dgzrti85a51a123b', 2)
+  insert into report
+  values (2222, '2021-03-03', '123cx', 2, 'zmllei70a11a123b', 2);
+  insert into report
+  values (5555, '2021-05-01', 'cn0987', 2, 'dgzrti85a51a123b', 2)
 
 commit;
