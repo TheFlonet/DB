@@ -7,7 +7,7 @@ begin;
 --select--
 -- Ogni sera viene stilato un rapporto che indica quante vaccinazioni sono state fatte nella giornata in tutti i centri vaccinali suddivise per categoria di cittadino.
 select c.tipo, count(*)
-from appuntamento_vaccinale av join cittadino c on av.cittadino = c.cf
+from appuntamento_vaccinale av join cittadino c on av.cittadino = c.cod
 where av.data_appuntamento = CURRENT_DATE
 group by c.tipo;
 
@@ -18,31 +18,32 @@ order by centro, vaccino;
 
 -- Ogni fine settimana, viene stilato un report che indica quante vaccinazioni sono state fatte per ogni vaccino per ognuna delle categorie di cittadini e quante di queste abbiano causato allergie.
 with num_tot_vaccino as(
-  select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_vaccino
-  from appuntamento_vaccinale av join lotto l on av.lotto = l.cod join cittadino c on av.cittadino = c.cf
-  group by c.tipo, l.tipo
+  select c.tipo as tipo_cittadino, l.vaccino as tipo_vaccino, count(*) as num_vaccini
+  from appuntamento_vaccinale av join lotto l on av.lotto = l.cod join cittadino c on av.cittadino = c.cod
+  group by c.tipo, l.vaccino
 ), num_tot_report as(
-  select c.tipo as tipo_cittadino, l.tipo as tipo_vaccino, count(*) as num_report
-  from report r join cittadino c on r.cittadino = c.cf join lotto l on r.lotto = l.cod
-  where r.data_report between CURRENT_DATE and CURRENT_DATE-7
-  group by c.tipo, l.tipo
+  select c.tipo as tipo_cittadino, l.vaccino as tipo_vaccino, count(*) as num_report
+  from report r join appuntamento_vaccinale av on r.appuntamento_vaccinale = av.cod 
+    join cittadino c on av.cittadino = c.cod join lotto l on av.lotto = l.cod
+  where r.data_report between CURRENT_DATE - 7 and CURRENT_DATE
+  group by c.tipo, l.vaccino
   )
-select v.tipo_cittadino, v.tipo_vaccino, num_vaccino, num_report
+select v.tipo_cittadino, v.tipo_vaccino, num_vaccini, num_report
 from num_tot_vaccino v, num_tot_report r
 where v.tipo_cittadino = r.tipo_cittadino and v.tipo_vaccino = r.tipo_vaccino;
 
 --edit--
 update allergia
-set cittadino = 'dgzrti85a51a123b'
-where cittadino = 'dptfri11a11a123b';
+set cittadino = 15
+where cittadino = 1;
 
 update possiede_dosi
 set vaccino = 1
-where centro = 2222 and vaccino = 2;    --errore, esiste già come tupla
+where centro = 2 and vaccino = 2;    -- errore, esiste già come tupla
 
 update possiede_dosi
 set vaccino = 6
-where centro = 2222 and vaccino = 2;    --non esiste vaccino 6
+where centro = 2 and vaccino = 2;    -- non esiste vaccino 6
 
 update appuntamento_vaccinale
 set ora = '17:30:00'
