@@ -28,7 +28,7 @@ create table if not exists cittadino (
   citta varchar(64) not null,
   precedente_positivita boolean not null default FALSE,
   tipo tipo_cittadino not null default 'altro',
-  check (cellulare is not null or email is not null)
+  check ((cellulare is not null and email is null) or (cellulare is null and email is not null))
 );
 /* 
 Nota sugli attributi città:
