@@ -39,12 +39,12 @@ set cittadino = 15
 where cittadino = 1;
 
 update centro_vaccinale
-set cod='6'
-where cod='4';
+set cod=6
+where cod=4;
 
 update tipo_vaccino
-set cod='4'
-where cod='2';
+set cod=4
+where cod=2;
 
 update lotto
 set cod='0987cx'
@@ -69,9 +69,6 @@ where cod = 1;
 
 delete from tipo_vaccino
 where cod = 3;  -- non viene portato a termine perché viola vincolo in lotto
-
-delete from appuntamento_vaccinale
-where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
 
 delete from cittadino 
 where cod=17;
