@@ -3,7 +3,6 @@ Tutte le operazioni svolte si riferiscono al database appena creato
 e non sono da considerarsi sequenziali
 */
 
-begin;
 --select--
 -- Ogni sera viene stilato un rapporto che indica quante vaccinazioni sono state fatte nella giornata in tutti i centri vaccinali suddivise per categoria di cittadino.
 select c.tipo, count(*)
@@ -83,5 +82,3 @@ where cod='cn0987';
 delete from cittadino 
 where cod=8;
 -- queste operazioni non vengono portate a termine perché i valori sono referenziati in altre tabelle
-
-commit;
