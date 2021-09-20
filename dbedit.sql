@@ -33,68 +33,52 @@ from num_tot_vaccino v, num_tot_report r
 where v.tipo_cittadino = r.tipo_cittadino and v.tipo_vaccino = r.tipo_vaccino;
 
 --edit--
+
 update allergia
 set cittadino = 15
 where cittadino = 1;
 
-update possiede_dosi
-set vaccino = 1
-where centro = 2 and vaccino = 2;    -- errore, esiste già come tupla
+update centro_vaccinale
+set cod='6'
+where cod='4';
 
-update possiede_dosi
-set vaccino = 6
-where centro = 2 and vaccino = 2;    -- non esiste vaccino 6
-
-update appuntamento_vaccinale
-set ora = '17:30:00'
-where data_appuntamento = '2021/03/03' and ora = '09:20:00' and centro = 2222;
-
-update appuntamento_vaccinale
-set data_appuntamento = '2021/04/03'
-where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = 2222;
-
-update appuntamento_vaccinale
-set centro = 8888
-where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = 2222;
-
-update cittadino 
-set cod=1010
-where cod=8;
-
-update cittadino 
-set cf=109
-where cf=17;
-
-update centro_vaccinale 
-set cod=1234 
-where cod=2;
+update tipo_vaccino
+set cod='4'
+where cod='2';
 
 update lotto
 set cod='0987cx'
 where cod='1234cx';
+
+update cittadino 
+set cod=1000
+where cod=8;
+
+update centro_vaccinale 
+set cod=1234 
+where cod=2;
 
 update medico
 set cod=12
 where cod=2;
 
 --delete--
-delete from allergia
-where cittadino = 'dgzrti85a51ab';  --cf errato--
 
-delete from possiede_dosi
-where centro = 2222 and vaccino = 1;
+delete from cittadino
+where cod = 1;
+
+delete from tipo_vaccino
+where cod = 3;  -- non viene portato a termine perché viola vincolo in lotto
 
 delete from appuntamento_vaccinale
 where data_appuntamento = '2021/03/03' and ora = '17:30:00' and centro = '2222';
 
--- medico 
 delete from cittadino 
 where cod=17;
 -- provoca la rimozione anche della entry ('dgvant70a11a123b', 'altro medico', 4444, TRUE) da medico
 
--- report
 delete from centro_vaccinale 
-where cod=2;
+where cod=2;    -- non viene portata a termine perché viola un vincolo in medico
 
 delete from lotto 
 where cod='cn0987';

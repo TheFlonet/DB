@@ -69,6 +69,7 @@ create table if not exists medico (
   centro integer not null,
   abilitazione_singola_dose boolean not null,
   foreign key (cod) references cittadino (cod) on delete cascade on update cascade,
+  foreign key (centro) references centro_vaccinale(cod) on update cascade,
   check (
     case 
     when abilitazione_singola_dose=TRUE then tipo='altro medico'
@@ -128,7 +129,7 @@ create table if not exists report (
   data_report date not null,
   vaccino integer not null,
   foreign key (centro) references centro_vaccinale (cod) on update cascade,
-  foreign key (vaccino) references tipo_vaccino (cod),
+  foreign key (vaccino) references tipo_vaccino (cod) on update cascade,
   foreign key (medico) references medico (cod) on update cascade,
   foreign key (appuntamento_vaccinale) references appuntamento_vaccinale (cod),
   primary key (appuntamento_vaccinale)
